@@ -2,9 +2,9 @@ import { isValidObjectId, Model } from 'mongoose';
 import { IModel } from '../interfaces/IModel';
 
 abstract class MongoModel<T> implements IModel<T> {
-  protected _model: Model<T>;
+  protected _model!:Model<T>;
 
-  contructor(model: Model<T>) {
+  constructor(model:Model<T>) {
     this._model = model;
   }
 
