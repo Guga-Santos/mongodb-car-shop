@@ -1,9 +1,11 @@
 import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
-import ErrorTypes, { errorCatalog } from '../errors/catalog';
+import { errorCatalog, ErrorTypes } from '../errors/catalog';
 
 const errorHandler: ErrorRequestHandler = (err: Error | ZodError, _req, res, _next) => {
-  if (err instanceof ZodError) return res.status(400).json({ message: err.issues });
+  if (err instanceof ZodError) {
+    return res.status(400).json({ message: err.issues });
+  }
 
   const messageAsErrorType = err.message as keyof typeof ErrorTypes;
 
