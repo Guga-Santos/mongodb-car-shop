@@ -9,6 +9,7 @@ describe('Cars Model', () => {
 
 	before(() => {
 		sinon.stub(Model, 'create').resolves(carMockWithId);
+		sinon.stub(Model, 'find').resolves([carMockWithId]);
 		sinon.stub(Model, 'findOne').resolves(carMockWithId);
 	});
 
@@ -20,6 +21,13 @@ describe('Cars Model', () => {
 		it('successfully created', async () => {
 			const newFrame = await carModel.create(carMock);
 			expect(newFrame).to.be.deep.equal(carMockWithId);
+		});
+	});
+
+	describe('ensure its possible to find all cars', () => {
+		it('successfully found', async () => {
+			const framesFound = await carModel.read();
+			expect(framesFound).to.be.deep.equal([carMockWithId]);
 		});
 	});
 

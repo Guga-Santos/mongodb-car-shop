@@ -11,8 +11,8 @@ const errorHandler: ErrorRequestHandler = (err: Error | ZodError, _req, res, _ne
 
   const mappedError = errorCatalog[messageAsErrorType];
   if (mappedError) {
-    const { httpStatus, message } = mappedError;
-    return res.status(httpStatus).json({ message });
+    const { httpStatus, error } = mappedError;
+    return res.status(httpStatus).json({ error });
   }
 
   console.error(err);

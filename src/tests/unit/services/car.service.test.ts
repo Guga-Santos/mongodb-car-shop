@@ -15,6 +15,9 @@ describe('Car Service', () => {
 		sinon.stub(carModel, 'readOne')
       .onCall(0).resolves(carMockWithId) 
 			.onCall(1).resolves(null); 
+		sinon.stub(carModel, 'read')
+      .onCall(0).resolves([carMockWithId]) 
+			.onCall(1).resolves(null); 
 	})
 	after(() => {
 		sinon.restore()
@@ -35,6 +38,19 @@ describe('Car Service', () => {
 			}
 
        expect(error).to.be.instanceOf(ZodError);
+		});
+	});
+
+	describe('Read all Cars', () => {
+		it('On success', async () => {
+			const newCar = await carService.read();
+
+			expect(newCar).to.be.deep.equal([carMockWithId]);
+		});
+
+		it('On failure', async () => {
+			const newCar = await carService.read();
+			expect(newCar).to.be.deep.equal(null);
 		});
 	});
 
