@@ -9,4 +9,3 @@ const connectToDatabase = (
 ) => mongoose.connect(mongoDatabaseURI);
 
 export default connectToDatabase;
-// Inital Commit
