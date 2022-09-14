@@ -1,11 +1,12 @@
 import { expect } from 'chai';
 import { Request, Response } from 'express';
 import * as sinon from 'sinon';
+import { updatedCar } from '../../../../__tests__/utils/CarsMock';
 
 import CarsController from '../../../controllers/Cars';
 import Cars from '../../../models/carsModel';
 import CarsService from '../../../services/Cars';
-import { carMock, carMockWithId } from '../../mocks/carMock';
+import { carMock, carMockWithId, updateCarMock } from '../../mocks/carMock';
 
 describe('Cars Controller', () => {
   const carModel = new Cars()
@@ -19,6 +20,7 @@ describe('Cars Controller', () => {
     sinon.stub(carService, 'create').resolves(carMock);
     sinon.stub(carService, 'readOne').resolves(carMock);
     sinon.stub(carService, 'read').resolves([carMock]);
+    sinon.stub(carService, 'update').resolves(updatedCar);
 
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns(res);
@@ -42,7 +44,7 @@ describe('Cars Controller', () => {
       await carController.read(req, res);
 
       expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
-      expect((res.json as sinon.SinonStub).calledWith([carMock])).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith(carMock)).to.be.true;
     });
   });
 
@@ -53,6 +55,17 @@ describe('Cars Controller', () => {
 
       expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith(carMock)).to.be.true;
+    });
+  });
+
+  describe('update Car', () => {
+    it('On success', async () => {
+      req.params = { id: carMockWithId._id };
+      req.body = updateCarMock;
+      await carController.update(req, res);
+
+      expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith(updatedCar)).to.be.true;
     });
   });
 });

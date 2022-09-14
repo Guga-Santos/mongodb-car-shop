@@ -2,7 +2,12 @@ import { expect } from 'chai';
 import { Model } from 'mongoose';
 import sinon from 'sinon';
 import Cars from '../../../models/carsModel';
-import { carMock, carMockWithId } from '../../mocks/carMock';
+import {
+	carMock,
+	carMockWithId,
+	updateCarMock,
+	updatedMock
+} from '../../mocks/carMock';
 
 describe('Cars Model', () => {
   const carModel = new Cars();
@@ -11,6 +16,7 @@ describe('Cars Model', () => {
 		sinon.stub(Model, 'create').resolves(carMockWithId);
 		sinon.stub(Model, 'find').resolves([carMockWithId]);
 		sinon.stub(Model, 'findOne').resolves(carMockWithId);
+		sinon.stub(Model, 'findOneAndUpdate').resolves(updatedMock);
 	});
 
 	after(() => {
@@ -33,8 +39,23 @@ describe('Cars Model', () => {
 
 	describe('ensure its possible to find a car', () => {
 		it('successfully found', async () => {
-			const framesFound = await carModel.readOne('4edd40c86762e0fb12000003');
+			const framesFound = await carModel.readOne(carMockWithId._id);
 			expect(framesFound).to.be.deep.equal(carMockWithId);
+		});
+
+		it('_id not found', async () => {
+			try {
+				await carModel.readOne('Wrong_id');
+			} catch (error: any) {
+				expect(error.message).to.be.eq('InvalidMongoId');
+			}
+		});
+	});
+
+	describe('ensure its possible to update a car', () => {
+		it('successfully found', async () => {
+			const framesFound = await carModel.update(carMockWithId._id, updateCarMock );
+			expect(framesFound).to.be.deep.equal(updatedMock);
 		});
 
 		it('_id not found', async () => {
