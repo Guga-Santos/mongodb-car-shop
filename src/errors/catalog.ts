@@ -25,5 +25,5 @@ export const errorCatalog: ErrorCatalog = {
   EmptyBody: {
     error: 'You have to provide a body',
     httpStatus: 400,
-  }
+  },
 };
