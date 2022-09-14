@@ -1,6 +1,7 @@
 export enum ErrorTypes {
   EntityNotFound = 'EntityNotFound',
   InvalidMongoId = 'InvalidMongoId',
+  EmptyBody = 'EmptyBody',
 }
 
 type ErrorResponseObject = { 
@@ -21,4 +22,8 @@ export const errorCatalog: ErrorCatalog = {
     error: 'Id must have 24 hexadecimal characters',
     httpStatus: 400,
   },
+  EmptyBody: {
+    error: 'You have to provide a body',
+    httpStatus: 400,
+  }
 };
