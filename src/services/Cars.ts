@@ -18,6 +18,12 @@ class CarsService implements IService<ICar> {
     return this._car.create(parsed.data);
   }
 
+  public async read(): Promise<ICar[] | null> {
+    const list = this._car.read();
+
+    return list ?? [];
+  }
+
   public async readOne(_id: string): Promise<ICar> {
     const car = await this._car.readOne(_id);
     if (!car) throw new Error(ErrorTypes.EntityNotFound);
